@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Danh Sách Phòng Trọ</title>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f4f4f4;
+    }
+  </style>
+</head>
+<body>
+  <h1>Danh Sách Phòng Trọ</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Mã Phòng</th>
+        <th>Hình Thức Thuê</th>
+        <th>Người Thuê</th>
+        <th>Số Điện Thoại</th>
+        <th>Ngày Bắt Đầu</th>
+      </tr>
+    </thead>
+    <tbody id="room-list">
+      
+    </tbody>
+  </table>
+
+  <script>
+    fetch("http://localhost:3000/api/tenants")
+      .then(response => response.json())
+      .then(data => {
+        const roomList = document.getElementById("room-list");
+        data.forEach(room => {
+          const row = document.createElement("tr");
+          row.innerHTML = ` 
+            <td>${room.room_id}</td>
+            <td>${room.rental_type}</td>
+            <td>${room.name || "Chưa có"}</td>
+            <td>${room.phone_number || "Chưa có"}</td>
+            <td>${room.start_date || "Chưa có"}</td>
+          `;
+          roomList.appendChild(row);
+        });
+      })
+      .catch(error => console.error("Error fetching room data:", error));
+  </script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thêm Phòng Trọ</title>
+  <style>
+    form {
+      max-width: 400px;
+      margin: 0 auto;
+    }
+    label {
+      display: block;
+      margin: 10px 0 5px;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Thêm Phòng Trọ</h1>
+  <form id="add-room-form">
+    <label for="room_id">Mã Phòng</label>
+    <input type="text" id="room_id" name="room_id" required>
+
+    <label for="rental_type">Hình Thức Thuê</label>
+    <select id="rental_type" name="rental_type" required>
+      <option value="theo tháng">Theo Tháng</option>
+      <option value="theo quý">Theo Quý</option>
+      <option value="theo năm">Theo Năm</option>
+    </select>
+
+    <label for="tenant_name">Tên Người Thuê</label>
+    <input type="text" id="tenant_name" name="tenant_name">
+
+    <label for="phone_number">Số Điện Thoại</label>
+    <input type="text" id="phone_number" name="phone_number">
+
+    <label for="start_date">Ngày Bắt Đầu</label>
+    <input type="date" id="start_date" name="start_date">
+
+    <button type="submit">Thêm Phòng</button>
+  </form>
+
+  <script>
+    document.getElementById("add-room-form").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const formData = {
+        room_id: document.getElementById("room_id").value,
+        rental_type: document.getElementById("rental_type").value,
+        tenant_name: document.getElementById("tenant_name").value,
+        phone_number: document.getElementById("phone_number").value,
+        start_date: document.getElementById("start_date").value,
+      };
+
+      fetch("http://localhost:3000/api/add-room", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          alert(data.message);
+          document.getElementById("add-room-form").reset();
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          alert("Có lỗi xảy ra!");
+        });
+    });
+  </script>
+</body>
+</html>
